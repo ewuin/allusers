@@ -1,0 +1,113 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ajax Demo</title>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+  </script>
+
+  <script>
+    $(document).ready(function(){
+
+      function refresh(){
+        $.ajax({
+          url:'/refresh',
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#noteBox').html(serverResponse)
+          }
+        })
+
+      };
+
+refresh();
+
+      $('#add_note').submit(function(e){
+        e.preventDefault()
+        console.log('typing. parents serialized');
+        $.ajax({
+          url: $(this).attr('action'),
+          method:'post',
+          data:$(this).serialize(),
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#noteBox').html(serverResponse)
+        }
+        })
+      });
+
+      $('#delete_note').submit(function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        console.log('typing. parents serialized');
+        $.ajax({
+          url: $(this).attr('action'),
+          method:'post',
+          data:$(this).serialize(),
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#noteBox').html(serverResponse)
+        }
+        })
+      });
+
+
+            $('#delete_note2').submit(function(e){
+              e.preventDefault()
+              e.stopPropagation()
+              console.log('typing. parents serialized');
+              $.ajax({
+                url: $(this).attr('action'),
+                method:'post',
+                data:$(this).serialize(),
+                success:function(serverResponse){
+                  console.log("sucess. serverResponse: ",serverResponse)
+                $('#noteBox2').html(serverResponse)
+              }
+              })
+            });
+
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+<div id="wrapper" style='width:960px; margin:auto; padding:7px; '>
+
+<div id="noteBox" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>
+</div>
+
+
+
+<div id="placeholder" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>
+<h2>Add a Note</h2>
+<form id="add_note" action="/add" method="post">
+  {% csrf_token %}
+  <label>Note: <textarea name="noteTA" placeholder="add a note..."></textarea></label>
+  <input type="submit">
+</form>
+</div>
+
+</div> <!--end wrapper -->
+</body>
+
+
+<div id="noteBox2" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>
+  {% for n in notes %}
+    <p>{{n.note}}</p>
+  </p>{{n.created_at}}</p>
+  <form action='/delete' method='post'>
+    {% csrf_token %}
+  <input type="hidden" name="id" value="{{n.id}}">
+  <input type="submit" value="Delete">
+  </form>
+  {% endfor %}
+</div>
+
+</html>

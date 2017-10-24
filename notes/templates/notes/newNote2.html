@@ -1,0 +1,11 @@
+{% for n in notes %}
+<div class="note" style="display:inline-block; width:80px;">
+<p>{{n.note}}</p>
+</p>{{n.created_at}}</p>
+<form action='/delete' method='post'>
+  {% csrf_token %}
+<input type="hidden" name="id" value="{{n.id}}">
+<input type="submit" value="Delete">
+</form>
+</div>
+{% endfor %}
