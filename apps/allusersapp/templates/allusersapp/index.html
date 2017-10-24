@@ -1,0 +1,101 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ajax Demo</title>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+  </script>
+
+  <script>
+    $(document).ready(function(){
+
+      $('#button_json').click(function(){
+        console.log('json button clicked!');
+        $.ajax({
+          url:'/user_login/all.json',
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#placeholder1').html(JSON.stringify(serverResponse))
+          }
+        })
+      });
+
+      $('#button_html').click(function(){
+        console.log('html button clicked!');
+        $.ajax({
+          url:'/user_login/all.html',
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#placeholder1').html(JSON.stringify(serverResponse))
+          }
+        })
+      });
+
+      $('#find_name').keyup(function(){
+        console.log('typing. parents serialized');
+        $.ajax({
+          url:$(this).parent().attr('action'),
+          method:'post',
+          data:$(this).parent().serialize(),
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#placeholder2').html(serverResponse)
+          }
+        })
+      });
+
+      $('#add_user').submit(function(e){
+        e.preventDefault()
+        console.log('typing. parents serialized');
+        $.ajax({
+          url: $(this).attr('action'),
+          method:'post',
+          data:$(this).serialize(),
+          success:function(serverResponse){
+            console.log("sucess. serverResponse: ",serverResponse)
+          $('#placeholder3').html(serverResponse)
+          }
+        })
+      });
+
+    });
+  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+<div id="wrapper" style='width:960px; margin:auto; padding:7px; '>
+<h1>Ajax Demo</h1>
+<h2>Demo1</h2>
+<button class='btn btn-primary' id="button_json">Fetch HttpResponse from allusersapp_user/all.json</button>
+<button class='btn btn-primary' id="button_html">Fetch HttpResponse from allusersapp_user/all.html</button>
+
+<div id="placeholder1" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>PLaceholder for Ajax content</div>
+
+<h2>Demo 2</h2>
+<form action="/user_login/find" method="post">
+  {% csrf_token %}
+  Find all users whose name starts with:
+  <input id="find_name" type="text" name="name_starts">
+</form>
+<div id="placeholder2" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>PLaceholder for Ajax content 2</div>
+
+<h2>Demo 3</h2>
+<p>Add a new person:</p>
+<form id="add_user" action="/user_login/add" method="post">
+  {% csrf_token %}
+
+  <label>First Name<input type="text" name="fnameTA"></label>
+  <label>Last Name<input type="text" name="lnameTA"></label>
+  <label>Email<input type="text" name="emailTA"></label>
+  <label>Age<input type="text" name="ageTA"></label>
+  <input type="submit">
+</form>
+<div id="placeholder3" style='border: 1px solid silver; padding;7px; margin-top: 20px;'>PLaceholder for Ajax content 2</div>
+
+</div> <!--end wrapper -->
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Age</th>
+  </thead>
+  <tbody>
+{% for u in user %}
+  <tr>
+    <td>{{u.first_name}} {{u.last_name}}</td>
+    <td>{{u.email}}</td>
+    <td>{{u.age}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>

@@ -1,0 +1,34 @@
+#open django shell for model queries
+python manage.py shell
+
+#import models
+from apps.allusersapp.models import *   # use caution with *
+
+#Create a few records in the users
+User.objects.create(first_name="max",last_name="stein",email="ee@sdf.com",age=5)
+
+#Know how to retrieve all users.
+User.objects.all()
+
+#Know how to get the last user.
+User.objects.last()
+
+#Know how to get the first user.
+User.objects.first()
+
+#get the number of users
+User.objects.count()
+
+#Know how to get the users sorted by their first name (order by first_name DESC)
+User.objects.order_by("first_name")  OR User.objects.order_by("-first_name") for reverse
+
+#Get the record of the user whose id is 3 and UPDATE the person's last_name to something else. Know how to do this directly in the console using .get and .save.
+r=User.objects.get(id=4)
+r.first_name="pepe"
+r.save()
+
+#Know how to delete a record of a user whose id is 4 (use something like User.objects.get(id=2).delete...).
+t=User.objects.get(id=5)
+t.delete()
+OR
+User.objects.get(id=6).delete()
